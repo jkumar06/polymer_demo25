@@ -3,6 +3,8 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-localstorage/iron-localstorage.js';
 import '@polymer/iron-form/iron-form.js';
 
+
+
 class register extends PolymerElement{
 		
 	static get template(){	
@@ -83,18 +85,25 @@ class register extends PolymerElement{
 				  <!--</iron-form>-->
 			  <!--</form>-->
 			  <h3>Registered Data</h3>
-				  <div id="output">details:
-				  {{patientInfo.name}}
-				  </div>
-				  <div id="output">
-				  {{patientInfo.address}}
-				  </div>
-				  <div id="output">
-				  {{patientInfo.email}}
-				  </div>
-				  <div id="output">
-				  {{patientInfo.number}}
-				  </div>
+		
+			<table style="width:90%">
+				<tr>
+				   
+					<th>Name</th>
+					<th>Address</th>
+					<th>Email</th>
+					<th>Phone</th>
+				</tr>
+				<template is="dom-repeat" items="{{existingEntries}}">
+				<tr class="item">
+					<td class="mdl-data-table__cell--non-numeric">{{item.0}}</td>
+					<td class="mdl-data-table__cell--non-numeric">{{item.1}}</td>
+					<td class="mdl-data-table__cell--non-numeric">{{item.2}}</td>
+					<td class="mdl-data-table__cell--non-numeric">{{item.3}}</td>
+					
+			    </tr>
+				</template>
+			</table>
 		  </div>
 	  </body>
 		`;
@@ -103,6 +112,14 @@ class register extends PolymerElement{
 	static get properties() {
 		return {
 		  patientInfo: { type: Object },
+		  patlist : {
+			type: Array,
+			value: function() { return []; }
+		  },
+		  existingEntries: {
+			type: Array,
+			value: function() { return []; }
+		}
 		}
 	  }
 	
@@ -114,13 +131,17 @@ class register extends PolymerElement{
 		  number: ""
 		}
 	}
-//
+
 	addpatient() {
+			this.set('isDataExists', true);
 			this.set('patientInfo.name', this.$.fname.value);
 			this.set('patientInfo.address', this.$.address.value);
 			this.set('patientInfo.email', this.$.email.value);
 			this.set('patientInfo.number', this.$.phone.value);
-		//alert(this.$.fname.value);
+			window.localStorage.setItem("patientInfo", JSON.stringify(this.patientInfo));
+			this.existingEntries.push(JSON.parse(window.localStorage.getItem('patientInfo')));
+			console.log('existing Entries: ', this.existingEntries);
+			this.existingEntries = JSON.parse(window.localStorage.getItem('All-Entries'));
 	  }
 	// addemp () {
 	// 	if(typeof(Storage) !== "undefined") {
@@ -167,7 +188,6 @@ class register extends PolymerElement{
     //             window.localStorage.setItem('Current-Entry-List', JSON.stringify(patlist));
     //             existingEntries.push(patlist);
             //     window.localStorage.setItem("All-Entries", JSON.stringify(existingEntries));
-
             //     window.alert("Patient Added Sucessfully");
 
             //     this.$.patientform.reset();

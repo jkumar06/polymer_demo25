@@ -63,12 +63,8 @@ class PatientList extends PolymerElement {
     }
     ready() {
         super.ready();
-
-        //console.log('hi');
-        //this.addEventListener('handleLocalstorageLoadEvent');
-        //console.log('hi muthu');
         this.patlist = JSON.parse(window.localStorage.getItem('All-Entries'));
-        //this.$.empfirstname.innerHTML = JSON.parse(window.localStorage.getItem('All-Entries', patlist[1]));
+       
 
     }
     delete(e) {
@@ -77,13 +73,7 @@ class PatientList extends PolymerElement {
         var xxx = data.splice(1, 1);
         console.log(xxx);
         window.localStorage.setItem("All-Entries", JSON.stringify(xxx));
-
-        // window.localStorage.removeItem('All-Entries'); // delete all
-        // const target = e.target;
-        // if ('BUTTON' != target.tagName) return;
-        // const record = target.record;
-        // do the rest
-    }
+  }
 }
 
 window.customElements.define('patient-list', PatientList);
